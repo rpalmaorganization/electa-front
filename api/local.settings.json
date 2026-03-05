@@ -6,7 +6,8 @@
     "Landing__UrlVerify": "https://www.google.com/recaptcha/api/siteverify",
     "Landing__GoogleToken": "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
     "Landing__SecretKey": "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe",
-    "AzureFunctionGraphURL": "http://localhost:7120/"
+    "AzureFunctionGraphURL": "http://localhost:7120/",
+    "AzureFunctionGraphKey": "R1Qwa82gGgegq6xOex6sgqnkviqEMQkJksPguYm75UDEAzFu-VoJpw=="
   },
   "Host": {
     "LocalHttpPort": 7071,

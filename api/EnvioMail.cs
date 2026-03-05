@@ -45,7 +45,7 @@ namespace api
             var body = await JsonSerializer.DeserializeAsync<MailLandingPageRequest>(req.Body, JsonOptions);
             if (body == null || string.IsNullOrWhiteSpace(body.Token))
                 return req.CreateResponse(HttpStatusCode.BadRequest);
-
+            /*
             GoogleCaptchaResponse? captchaResponse = await CheckGoogleCaptcha(body.Token);
 
             if (captchaResponse?.Success != true)
@@ -54,11 +54,15 @@ namespace api
                 await badCaptcha.WriteAsJsonAsync(new { error = "Captcha invalido", status = HttpStatusCode.BadRequest });
                 return badCaptcha;
             }
-
+            */
             try
             {
+                var functionKey = _configuration["AzureFunctionGraphKey"];   
+
                 // Crear cliente y enviar POST a FunctionGraph
                 var client = _httpClientFactory.CreateClient("FunctionGraph");
+                client.DefaultRequestHeaders.Add("x-functions-key", functionKey);
+                
                 var jsonBody = JsonSerializer.Serialize(body, JsonOptions);
                 using var httpContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
