@@ -45,13 +45,20 @@ namespace api
             var body = await JsonSerializer.DeserializeAsync<MailLandingPageRequest>(req.Body, JsonOptions);
             if (body == null || string.IsNullOrWhiteSpace(body.Token))
                 return req.CreateResponse(HttpStatusCode.BadRequest);
+
+            // TODO : Se comentan el checkGoogleCaptcha para poder verificar la seguridad de la funcion. Luego de las pruebas, descomentar.
+
             /*
             GoogleCaptchaResponse? captchaResponse = await CheckGoogleCaptcha(body.Token);
 
             if (captchaResponse?.Success != true)
             {
+                var errors = captchaResponse?.ErrorCodes != null
+                    ? string.Join(", ", captchaResponse.ErrorCodes)
+                    : "Captcha verification failed";
+
                 var badCaptcha = req.CreateResponse(HttpStatusCode.BadRequest);
-                await badCaptcha.WriteAsJsonAsync(new { error = "Captcha invalido", status = HttpStatusCode.BadRequest });
+                await badCaptcha.WriteAsJsonAsync(new { ok = false, error = errors, status = HttpStatusCode.BadRequest });
                 return badCaptcha;
             }
             */
@@ -61,6 +68,8 @@ namespace api
 
                 // Crear cliente y enviar POST a FunctionGraph
                 var client = _httpClientFactory.CreateClient("FunctionGraph");
+
+                client.DefaultRequestHeaders.Remove("x-functions-key");
                 client.DefaultRequestHeaders.Add("x-functions-key", functionKey);
                 
                 var jsonBody = JsonSerializer.Serialize(body, JsonOptions);
@@ -74,20 +83,20 @@ namespace api
 
                 var result = new
                 {
+                    ok = graphResponse.IsSuccessStatusCode,
                     statusCode = (int)graphResponse.StatusCode,
                     response = responseBody
                 };
-
-                var ok = req.CreateResponse(HttpStatusCode.OK);
-                await ok.WriteAsJsonAsync(result);
-                return ok;
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(result);
+                return response;
             }
             catch (Exception ex)
             {
                 // _logger.LogError(ex, $"Error en {}.\nMensaje: {ex.Message}");
-                var error = req.CreateResponse(HttpStatusCode.InternalServerError);
-                await error.WriteAsJsonAsync(new { error = ex.Message, status = HttpStatusCode.InternalServerError });
-                return error;
+                var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
+                await errorResponse.WriteAsJsonAsync(new { ok = false, error = ex.Message, status = HttpStatusCode.InternalServerError });
+                return errorResponse;
             }
         }
 
