@@ -252,7 +252,7 @@ if (form) {
             .then(response => {
                 // Check if the response is OK (status 200–299)
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error Status: ${response.status}`);
                 }
                 return response.json(); // Parse JSON response
             })
