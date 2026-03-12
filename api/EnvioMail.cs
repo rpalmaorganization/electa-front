@@ -48,7 +48,7 @@ namespace api
 
             // TODO : Se comentan el checkGoogleCaptcha para poder verificar la seguridad de la funcion. Luego de las pruebas, descomentar.
 
-            /*
+            
             GoogleCaptchaResponse? captchaResponse = await CheckGoogleCaptcha(body.Token);
 
             if (captchaResponse?.Success != true)
@@ -61,7 +61,7 @@ namespace api
                 await badCaptcha.WriteAsJsonAsync(new { ok = false, error = errors, status = HttpStatusCode.BadRequest });
                 return badCaptcha;
             }
-            */
+            
             try
             {
                 var functionKey = _configuration["AzureFunctionGraphKey"];   
