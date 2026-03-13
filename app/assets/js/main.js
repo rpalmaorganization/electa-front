@@ -240,7 +240,7 @@ if (form) {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-
+    //
     // cargar configuracion para front-end
     setTimeout(() => {
         fetch("/api/load_config", {
