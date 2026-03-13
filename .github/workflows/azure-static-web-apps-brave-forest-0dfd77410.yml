@@ -28,7 +28,6 @@ jobs:
         id: idtoken
         with:
           script: |
-            const core = require('@actions/core')
             return await core.getIDToken()
           result-encoding: string
 
@@ -64,3 +63,4 @@ jobs:
         run: |
           echo "Sending email..."
           curl -X POST https://example.com/send-email
+
