@@ -99,7 +99,7 @@
         header.classList.remove('menu-open');
     });
 
-    // CERRAR AL CLICK EN LINKS (mobile)
+    // CERRAR AL CLICK EN LINKS (   mobile)
     document.querySelectorAll('#navbarNav .nav-link').forEach(link => {
         link.addEventListener('click', () => {
             const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
